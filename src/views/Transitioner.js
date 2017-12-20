@@ -110,7 +110,8 @@ class Transitioner extends React.Component<Props, State> {
     }
 
     const indexHasChanged =
-      nextProps.navigation.state.index !== this.props.navigation.state.index;
+      nextScenes.length !== this.state.scenes.length ||
+      nextScenes.filter(isSceneNotStale).length !== this.state.scenes.length;
     if (this._isTransitionRunning) {
       this._queuedTransition = { nextProps, nextScenes, indexHasChanged };
       return;
@@ -152,7 +153,7 @@ class Transitioner extends React.Component<Props, State> {
     const { timing } = transitionSpec;
     delete transitionSpec.timing;
 
-    const toValue = nextProps.navigation.state.index;
+    const toValue = nextScenes.findIndex(isSceneActive);
     const positionHasChanged = position.__getValue() !== toValue;
 
     // if swiped back, indexHasChanged == true && positionHasChanged == false
@@ -165,7 +166,7 @@ class Transitioner extends React.Component<Props, State> {
             }),
             timing(position, {
               ...transitionSpec,
-              toValue: nextProps.navigation.state.index,
+              toValue: toValue,
             }),
           ]
         : [];
@@ -235,7 +236,7 @@ class Transitioner extends React.Component<Props, State> {
     };
 
     this._transitionProps = buildTransitionProps(this.props, nextState);
-
+    this.state.position.setValue(nextState.scenes.find(isSceneActive).index);
     this.setState(nextState, async () => {
       if (this.props.onTransitionEnd) {
         const result = this.props.onTransitionEnd(

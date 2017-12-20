@@ -49,7 +49,13 @@ function getSceneIndicesForInterpolationInputRange(
       return { first: index - 1, last: index + 1 };
     }
   } else {
-    return { first: index - 1, last: index + 1 };
+    const currentSceneIndexInScenes = scenes.findIndex(
+      (item: NavigationScene) => item === scene
+    );
+    return {
+      first: currentSceneIndexInScenes - 1,
+      last: currentSceneIndexInScenes + 1,
+    };
   }
 }
 

@@ -48,7 +48,7 @@ function forInitial(
 function forHorizontal(
   props: NavigationSceneRendererProps
 ): AnimatedViewStyleProp {
-  const { layout, position, scene } = props;
+  const { layout, position, scene, scenes } = props;
 
   if (!layout.isMeasured) {
     return forInitial(props);
@@ -58,7 +58,7 @@ function forHorizontal(
   if (!interpolate) return { opacity: 0 };
 
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => scene === s);
   const opacity = position.interpolate({
     inputRange: [first, first + 0.01, index, last - 0.01, last],
     outputRange: ([0, 1, 1, 0.85, 0]: Array<number>),
@@ -85,7 +85,7 @@ function forHorizontal(
 function forVertical(
   props: NavigationSceneRendererProps
 ): AnimatedViewStyleProp {
-  const { layout, position, scene } = props;
+  const { layout, position, scene, scenes } = props;
 
   if (!layout.isMeasured) {
     return forInitial(props);
@@ -95,7 +95,7 @@ function forVertical(
   if (!interpolate) return { opacity: 0 };
 
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => scene === s);
   const opacity = position.interpolate({
     inputRange: [first, first + 0.01, index, last - 0.01, last],
     outputRange: ([0, 1, 1, 0.85, 0]: Array<number>),
@@ -120,7 +120,7 @@ function forVertical(
 function forFadeFromBottomAndroid(
   props: NavigationSceneRendererProps
 ): AnimatedViewStyleProp {
-  const { layout, position, scene } = props;
+  const { layout, position, scene, scenes } = props;
 
   if (!layout.isMeasured) {
     return forInitial(props);
@@ -130,7 +130,7 @@ function forFadeFromBottomAndroid(
   if (!interpolate) return { opacity: 0 };
 
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => scene === s);
   const inputRange = ([first, index, last - 0.01, last]: Array<number>);
 
   const opacity = position.interpolate({
@@ -154,7 +154,7 @@ function forFadeFromBottomAndroid(
  *  fadeIn and fadeOut
  */
 function forFade(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
-  const { layout, position, scene } = props;
+  const { layout, position, scene, scenes } = props;
 
   if (!layout.isMeasured) {
     return forInitial(props);
@@ -164,7 +164,7 @@ function forFade(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
   if (!interpolate) return { opacity: 0 };
 
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => scene === s);
   const opacity = position.interpolate({
     inputRange: ([first, index, last]: Array<number>),
     outputRange: ([0, 1, 1]: Array<number>),
