@@ -28,7 +28,7 @@ function forLeft(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
   if (!interpolate) return { opacity: 0 };
 
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => s === scene);
 
   return {
     opacity: position.interpolate({
@@ -45,13 +45,13 @@ function forLeft(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
 }
 
 function forCenter(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
-  const { position, scene } = props;
+  const { position, scene, scenes } = props;
   const interpolate = getSceneIndicesForInterpolationInputRange(props);
 
   if (!interpolate) return { opacity: 0 };
 
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => s === scene);
   const inputRange = [first, index, last];
 
   return {
@@ -73,12 +73,12 @@ function forCenter(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
 }
 
 function forRight(props: NavigationSceneRendererProps): AnimatedViewStyleProp {
-  const { position, scene } = props;
+  const { position, scene, scenes } = props;
   const interpolate = getSceneIndicesForInterpolationInputRange(props);
 
   if (!interpolate) return { opacity: 0 };
   const { first, last } = interpolate;
-  const index = scene.index;
+  const index = scenes.findIndex(s => s === scene);
 
   return {
     opacity: position.interpolate({

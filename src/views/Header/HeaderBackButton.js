@@ -22,6 +22,8 @@ type Props = {
   tintColor?: ?string,
   truncatedTitle?: ?string,
   width?: ?number,
+  widget: any,
+  scene: any,
 };
 
 type State = {
@@ -57,7 +59,11 @@ class HeaderBackButton extends React.PureComponent<Props, State> {
       titleStyle,
       tintColor,
       truncatedTitle,
+      scene,
     } = this.props;
+    if (scene.index === 0) {
+      return null;
+    }
 
     const renderTruncated =
       this.state.initialTextWidth && width

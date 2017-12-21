@@ -320,7 +320,7 @@ export type NavigationStackScreenOptions = NavigationScreenOptions & {
   headerTruncatedBackTitle?: string,
   headerBackTitleStyle?: TextStyleProp,
   headerPressColorAndroid?: string,
-  headerRight?: React.Node,
+  headerRight?: React.Node | React.ComponentType<any>,
   headerStyle?: ViewStyleProp,
   gesturesEnabled?: boolean,
   gestureResponseDistance?: { vertical?: number, horizontal?: number },

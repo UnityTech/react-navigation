@@ -13,6 +13,7 @@ type Props = {
   children: React.Node,
   selectionColor?: string | number,
   style?: AnimatedTextStyleProp,
+  scene: any,
 };
 
 const AnimatedText = Animated.Text;

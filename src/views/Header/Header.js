@@ -136,6 +136,7 @@ class Header extends React.PureComponent<Props, State> {
         : HeaderTitle;
     return (
       <RenderedHeaderTitle
+        scene={props.scene}
         onLayout={onLayoutIOS}
         allowFontScaling={allowFontScaling == null ? true : allowFontScaling}
         style={[color ? { color } : null, titleStyle]}
@@ -154,9 +155,7 @@ class Header extends React.PureComponent<Props, State> {
     ) {
       return options.headerLeft;
     }
-    if (props.scene.index === 0) {
-      return null;
-    }
+
     const backButtonTitle = this._getBackButtonTitleString(props.scene);
     const truncatedBackButtonTitle = this._getTruncatedBackButtonTitle(
       props.scene
@@ -167,6 +166,7 @@ class Header extends React.PureComponent<Props, State> {
     const RenderedLeftComponent = options.headerLeft || HeaderBackButton;
     return (
       <RenderedLeftComponent
+        scene={props.scene}
         onPress={this._navigateBack}
         pressColorAndroid={options.headerPressColorAndroid}
         tintColor={options.headerTintColor}
@@ -174,6 +174,7 @@ class Header extends React.PureComponent<Props, State> {
         truncatedTitle={truncatedBackButtonTitle}
         titleStyle={options.headerBackTitleStyle}
         width={width}
+        widget={options.headerLeftWidget}
       />
     );
   };
@@ -181,7 +182,14 @@ class Header extends React.PureComponent<Props, State> {
   _renderRightComponent = (props: SceneProps): ?React.Node => {
     const details = this.props.getScreenDetails(props.scene);
     const { headerRight } = details.options;
-    return headerRight || null;
+    if (!headerRight) {
+      return null;
+    }
+    if (React.isValidElement(headerRight) || !headerRight) {
+      return headerRight || null;
+    }
+    const RightComponent = headerRight;
+    return <RightComponent scene={props.scene} />;
   };
 
   _renderLeft(props: SceneProps): ?React.Node {
@@ -298,13 +306,13 @@ class Header extends React.PureComponent<Props, State> {
     let appBar;
 
     if (this.props.mode === 'float') {
-      const scenesProps: Array<
-        SceneProps
-      > = this.props.scenes.map((scene: NavigationScene) => ({
-        position: this.props.position,
-        progress: this.props.progress,
-        scene,
-      }));
+      const scenesProps: Array<SceneProps> = this.props.scenes.map(
+        (scene: NavigationScene) => ({
+          position: this.props.position,
+          progress: this.props.progress,
+          scene,
+        })
+      );
       appBar = scenesProps.map(this._renderHeader, this);
     } else {
       appBar = this._renderHeader({
