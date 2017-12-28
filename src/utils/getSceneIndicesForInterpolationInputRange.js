@@ -30,15 +30,15 @@ function getSceneIndicesForInterpolationInputRange(
     ) {
       return {
         first: Math.min(targetSceneIndex, index - 1),
-        last: index + 1,
+        last: currentSceneIndexInScenes + 1,
       };
     } else if (
       index === targetSceneIndex &&
       currentSceneIndexInScenes === targetSceneIndexInScenes
     ) {
       return {
-        first: index - 1,
-        last: Math.max(lastSceneIndex, index + 1),
+        first: currentSceneIndexInScenes - 1,
+        last: Math.max(lastSceneIndex, currentSceneIndexInScenes + 1),
       };
     } else if (
       index === targetSceneIndex ||
@@ -46,7 +46,10 @@ function getSceneIndicesForInterpolationInputRange(
     ) {
       return null;
     } else {
-      return { first: index - 1, last: index + 1 };
+      return {
+        first: currentSceneIndexInScenes - 1,
+        last: currentSceneIndexInScenes + 1,
+      };
     }
   } else {
     const currentSceneIndexInScenes = scenes.findIndex(
